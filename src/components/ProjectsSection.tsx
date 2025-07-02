@@ -31,12 +31,20 @@ export default function ProjectsSection() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [viewMode, setViewMode] = useState<'carousel' | 'grid'>('carousel');
   const [isClient, setIsClient] = useState(false);
+  const [particlePositions, setParticlePositions] = useState<Array<{ left: string; top: string }>>([]);
 
   const featuredProjects = projects.filter(p => p.featured);
   const allProjects = projects;
 
   useEffect(() => {
     setIsClient(true);
+    // Generate particle positions once on client mount
+    setParticlePositions(
+      Array.from({ length: 8 }, () => ({
+        left: `${Math.random() * 100}%`,
+        top: `${Math.random() * 100}%`,
+      }))
+    );
   }, []);
 
   useEffect(() => {
@@ -187,13 +195,13 @@ export default function ProjectsSection() {
 
       {/* Hover particles */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {isClient && [...Array(8)].map((_, i) => (
+        {isClient && particlePositions.map((position, i) => (
           <motion.div
             key={i}
             className="absolute w-2 h-2 bg-primary/60 rounded-full"
             style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
+              left: position.left,
+              top: position.top,
             }}
             animate={{
               scale: [0, 1, 0],

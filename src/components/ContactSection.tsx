@@ -32,9 +32,17 @@ export default function ContactSection() {
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
   const [errors, setErrors] = useState<{ [k: string]: string }>({});
   const [isClient, setIsClient] = useState(false);
+  const [particlePositions, setParticlePositions] = useState<Array<{ left: string; top: string }>>([]);
 
   useEffect(() => {
     setIsClient(true);
+    // Generate particle positions once on client mount
+    setParticlePositions(
+      Array.from({ length: 20 }, () => ({
+        left: `${Math.random() * 100}%`,
+        top: `${Math.random() * 100}%`,
+      }))
+    );
   }, []);
 
   useEffect(() => {
@@ -189,13 +197,13 @@ export default function ContactSection() {
         {/* Animated background pattern */}
         <div className="absolute inset-0 opacity-5">
           <div className="absolute inset-0 bg-gradient-to-br from-primary via-transparent to-accent" />
-          {isClient && [...Array(20)].map((_, i) => (
+          {isClient && particlePositions.map((position, i) => (
             <motion.div
               key={i}
               className="absolute w-2 h-2 bg-primary rounded-full"
               style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
+                left: position.left,
+                top: position.top,
               }}
               animate={{
                 scale: [0, 1, 0],

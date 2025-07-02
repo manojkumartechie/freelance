@@ -1,6 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SiPython, SiAmazonwebservices, SiGooglecloud, SiApacheairflow, SiApachespark, SiDocker } from "react-icons/si";
@@ -26,6 +26,17 @@ export default function SkillsSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const skillsGridRef = useRef<HTMLDivElement>(null);
+  const [particlePositions, setParticlePositions] = useState<Array<{ left: string; top: string }>>([]);
+
+  useEffect(() => {
+    // Generate particle positions once on client mount
+    setParticlePositions(
+      Array.from({ length: 6 }, () => ({
+        left: `${Math.random() * 100}%`,
+        top: `${Math.random() * 100}%`,
+      }))
+    );
+  }, []);
 
   useEffect(() => {
     if (!sectionRef.current) return;
@@ -169,13 +180,13 @@ export default function SkillsSection() {
 
             {/* Particle effect on hover */}
             <div className="absolute inset-0 pointer-events-none">
-              {[...Array(6)].map((_, i) => (
+              {particlePositions.map((position, i) => (
                 <div
                   key={i}
                   className="absolute w-1 h-1 bg-primary rounded-full opacity-0 group-hover:opacity-100"
                   style={{
-                    left: `${Math.random() * 100}%`,
-                    top: `${Math.random() * 100}%`,
+                    left: position.left,
+                    top: position.top,
                     animationDelay: `${i * 0.1}s`,
                   }}
                 />
