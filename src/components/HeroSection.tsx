@@ -159,7 +159,7 @@ export default function HeroSection() {
 
       {/* Hero Content */}
       <motion.div
-        className="hero-card relative z-20 glass soft-light p-12 rounded-3xl flex flex-col items-center gap-8 shadow-2xl max-w-2xl w-full mt-20 backdrop-blur-xl"
+        className="hero-card relative z-20 p-12 rounded-3xl flex flex-col items-center gap-8 shadow-2xl max-w-2xl w-full mt-20"
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 1.2, ease: "easeOut" }}
@@ -184,7 +184,7 @@ export default function HeroSection() {
 
         <div ref={buttonRef}>
           <MagneticButton 
-            className="mt-6 px-10 py-4 rounded-full bg-gradient-to-r from-primary to-accent text-white font-bold shadow-2xl hover:shadow-primary/25 transition-all duration-300 text-lg relative overflow-hidden group"
+            className="mt-6 px-10 py-4 rounded-full bg-gradient-to-r from-primary to-accent text-white font-bold shadow-2xl hover:shadow-primary/25 transition-all duration-300 text-lg relative overflow-hidden group glass soft-light backdrop-blur-xl"
             strength={0.4}
           >
             <span className="relative z-10">Let's Connect</span>

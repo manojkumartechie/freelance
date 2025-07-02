@@ -17,16 +17,16 @@ export default function Home() {
   return (
     <main className="flex flex-col gap-20 items-center w-full relative overflow-hidden">
       {/* Hero Section with enhanced 3D background and particles */}
-      <HeroSection />
+      <section id="home"><HeroSection /></section>
       
       {/* About Section with animated timeline */}
-      <AboutSection />
+      <section id="about"><AboutSection /></section>
       
       {/* Skills Section with 3D icons and interactive effects */}
-      <SkillsSection />
+      <section id="skills"><SkillsSection /></section>
       
       {/* Projects Section with enhanced carousel and grid views */}
-      <ProjectsSection />
+      <section id="projects"><ProjectsSection /></section>
       
       {/* Competitions Section with animated progress and badges */}
       <CompetitionsSection />
@@ -35,7 +35,7 @@ export default function Home() {
       <SpecialOfferSection />
       
       {/* Contact & Social Links Section with magnetic effects */}
-      <ContactSection />
+      <section id="contact"><ContactSection /></section>
       
       {/* Additional sections with enhanced animations */}
       <ArticlesSection />

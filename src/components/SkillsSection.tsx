@@ -163,21 +163,6 @@ export default function SkillsSection() {
               {skill.name}
             </span>
             
-            {/* Progress bar */}
-            <div className="w-full bg-white/10 rounded-full h-2 relative z-10">
-              <div 
-                className="progress-bar h-2 bg-gradient-to-r from-primary to-accent rounded-full relative overflow-hidden"
-                style={{ width: '0%' }}
-              >
-                <div className="absolute inset-0 bg-white/30 animate-pulse" />
-              </div>
-            </div>
-            
-            {/* Skill level percentage */}
-            <span className="text-sm text-primary font-bold relative z-10">
-              {skill.level}%
-            </span>
-
             {/* Particle effect on hover */}
             <div className="absolute inset-0 pointer-events-none">
               {particlePositions.map((position, i) => (
