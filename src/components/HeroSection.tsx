@@ -162,7 +162,7 @@ export default function HeroSection() {
         className="hero-card relative z-20 glass soft-light p-12 rounded-3xl flex flex-col items-center gap-8 shadow-2xl max-w-2xl w-full mt-20 backdrop-blur-xl"
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 1.2, ease: "power3.out" }}
+        transition={{ duration: 1.2, ease: "easeOut" }}
       >
         <div ref={titleRef} className="text-center">
           <h1 className="text-5xl md:text-7xl font-extrabold bg-gradient-to-r from-primary via-white to-accent bg-clip-text text-transparent">

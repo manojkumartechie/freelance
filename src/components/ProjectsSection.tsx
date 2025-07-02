@@ -30,9 +30,14 @@ export default function ProjectsSection() {
   const gridRef = useRef<HTMLDivElement>(null);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [viewMode, setViewMode] = useState<'carousel' | 'grid'>('carousel');
+  const [isClient, setIsClient] = useState(false);
 
   const featuredProjects = projects.filter(p => p.featured);
   const allProjects = projects;
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   useEffect(() => {
     if (!sectionRef.current) return;
@@ -182,7 +187,7 @@ export default function ProjectsSection() {
 
       {/* Hover particles */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {[...Array(8)].map((_, i) => (
+        {isClient && [...Array(8)].map((_, i) => (
           <motion.div
             key={i}
             className="absolute w-2 h-2 bg-primary/60 rounded-full"
@@ -245,7 +250,7 @@ export default function ProjectsSection() {
             <motion.div
               className="flex gap-8 min-w-full"
               animate={{ x: `-${currentSlide * 100}%` }}
-              transition={{ duration: 0.8, ease: "power3.inOut" }}
+              transition={{ duration: 0.8, ease: "easeInOut" }}
             >
               {featuredProjects.map((project) => (
                 <div key={project.id} className="min-w-[400px] max-w-[400px]">

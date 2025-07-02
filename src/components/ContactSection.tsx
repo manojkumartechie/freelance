@@ -31,6 +31,11 @@ export default function ContactSection() {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
   const [errors, setErrors] = useState<{ [k: string]: string }>({});
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   useEffect(() => {
     if (!sectionRef.current) return;
@@ -184,7 +189,7 @@ export default function ContactSection() {
         {/* Animated background pattern */}
         <div className="absolute inset-0 opacity-5">
           <div className="absolute inset-0 bg-gradient-to-br from-primary via-transparent to-accent" />
-          {[...Array(20)].map((_, i) => (
+          {isClient && [...Array(20)].map((_, i) => (
             <motion.div
               key={i}
               className="absolute w-2 h-2 bg-primary rounded-full"
@@ -292,7 +297,7 @@ export default function ContactSection() {
               className="text-primary text-center mt-4 font-semibold"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, ease: "back.out(1.7)" }}
+              transition={{ duration: 0.5, ease: "backOut" }}
             >
               Thank you! I'll get back to you soon. ✨
             </motion.div>
