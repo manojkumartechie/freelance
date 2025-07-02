@@ -1,4 +1,3 @@
-import Image from "next/image";
 import HeroSection from "@/components/HeroSection";
 import AboutSection from "@/components/AboutSection";
 import SkillsSection from "@/components/SkillsSection";
@@ -16,34 +15,35 @@ import NewsletterSection from "@/components/NewsletterSection";
 
 export default function Home() {
   return (
-    <main className="flex flex-col gap-16 items-center w-full">
-      {/* Hero Section with 3D background and particles */}
+    <main className="flex flex-col gap-20 items-center w-full relative overflow-hidden">
+      {/* Hero Section with enhanced 3D background and particles */}
       <HeroSection />
+      
       {/* About Section with animated timeline */}
       <AboutSection />
-      {/* Skills Section with 3D icons/cards */}
+      
+      {/* Skills Section with 3D icons and interactive effects */}
       <SkillsSection />
-      {/* Projects Section with animated grid/carousel */}
+      
+      {/* Projects Section with enhanced carousel and grid views */}
       <ProjectsSection />
-      {/* Competitions Section with badges and progress bars */}
+      
+      {/* Competitions Section with animated progress and badges */}
       <CompetitionsSection />
+      
       {/* Special Offer Call-to-Action */}
       <SpecialOfferSection />
-      {/* Contact & Social Links Section */}
+      
+      {/* Contact & Social Links Section with magnetic effects */}
       <ContactSection />
-      {/* Articles/Blog Section */}
+      
+      {/* Additional sections with enhanced animations */}
       <ArticlesSection />
-      {/* Case Studies Section */}
       <CaseStudiesSection />
-      {/* Testimonials Section */}
       <TestimonialsSection />
-      {/* Process Section */}
       <ProcessSection />
-      {/* Achievements Timeline Section */}
       <AchievementsTimelineSection />
-      {/* Video Introduction Section */}
       <VideoIntroSection />
-      {/* Newsletter Signup Section */}
       <NewsletterSection />
     </main>
   );

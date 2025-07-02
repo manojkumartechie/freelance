@@ -1,31 +1,122 @@
 "use client";
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls, Sphere, MeshDistortMaterial } from "@react-three/drei";
+import { OrbitControls, Sphere, MeshDistortMaterial, Float } from "@react-three/drei";
 import Particles from "react-tsparticles";
 import { motion } from "framer-motion";
+import { useEffect, useRef } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import AnimatedText from "./AnimatedText";
+import MagneticButton from "./MagneticButton";
 
-// Hero section with 3D animated background, particles, and glass overlay
-export default function HeroSection() {
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger);
+}
+
+function AnimatedSphere() {
   return (
-    <section className="relative flex flex-col items-center justify-center min-h-[80vh] w-full overflow-hidden">
-      {/* 3D Animated Background (React Three Fiber) */}
+    <Float speed={2} rotationIntensity={1} floatIntensity={2}>
+      <Sphere args={[1, 64, 64]} scale={1.2}>
+        <MeshDistortMaterial
+          color="#00C9A7"
+          attach="material"
+          distort={0.4}
+          speed={2}
+          roughness={0.2}
+          metalness={0.8}
+        />
+      </Sphere>
+    </Float>
+  );
+}
+
+export default function HeroSection() {
+  const heroRef = useRef<HTMLElement>(null);
+  const titleRef = useRef<HTMLDivElement>(null);
+  const subtitleRef = useRef<HTMLDivElement>(null);
+  const descriptionRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!heroRef.current) return;
+
+    const ctx = gsap.context(() => {
+      // Initial setup
+      gsap.set([titleRef.current, subtitleRef.current, descriptionRef.current, buttonRef.current], {
+        opacity: 0,
+        y: 100,
+      });
+
+      // Main timeline
+      const tl = gsap.timeline({ delay: 0.5 });
+      
+      tl.to(titleRef.current, {
+        opacity: 1,
+        y: 0,
+        duration: 1.2,
+        ease: "power3.out",
+      })
+      .to(subtitleRef.current, {
+        opacity: 1,
+        y: 0,
+        duration: 1,
+        ease: "power3.out",
+      }, "-=0.8")
+      .to(descriptionRef.current, {
+        opacity: 1,
+        y: 0,
+        duration: 1,
+        ease: "power3.out",
+      }, "-=0.6")
+      .to(buttonRef.current, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: "back.out(1.7)",
+      }, "-=0.4");
+
+      // Parallax effect for hero content
+      gsap.to(heroRef.current, {
+        yPercent: -50,
+        ease: "none",
+        scrollTrigger: {
+          trigger: heroRef.current,
+          start: "top top",
+          end: "bottom top",
+          scrub: true,
+        },
+      });
+
+      // Floating animation for the glass card
+      gsap.to(".hero-card", {
+        y: -20,
+        duration: 3,
+        ease: "power1.inOut",
+        yoyo: true,
+        repeat: -1,
+      });
+
+    }, heroRef);
+
+    return () => ctx.revert();
+  }, []);
+
+  return (
+    <section 
+      ref={heroRef}
+      className="relative flex flex-col items-center justify-center min-h-screen w-full overflow-hidden"
+    >
+      {/* 3D Animated Background */}
       <div className="absolute inset-0 z-0">
         <Canvas camera={{ position: [0, 0, 2.5] }}>
           <ambientLight intensity={0.7} />
           <directionalLight position={[2, 2, 2]} intensity={1.2} />
-          <Sphere args={[1, 64, 64]} scale={1.2}>
-            <MeshDistortMaterial
-              color="#00C9A7"
-              attach="material"
-              distort={0.4}
-              speed={2}
-              roughness={0.2}
-            />
-          </Sphere>
+          <AnimatedSphere />
           <OrbitControls enableZoom={false} enablePan={false} autoRotate autoRotateSpeed={1.5} />
         </Canvas>
       </div>
-      {/* Interactive Particles (tsparticles) */}
+
+      {/* Interactive Particles */}
       <div className="absolute inset-0 z-10 pointer-events-none">
         <Particles
           id="tsparticles-hero"
@@ -33,44 +124,85 @@ export default function HeroSection() {
             fullScreen: false,
             background: { color: { value: "transparent" } },
             particles: {
-              number: { value: 60 },
+              number: { value: 80 },
               color: { value: "#fff" },
-              opacity: { value: 0.15 },
+              opacity: { value: 0.2 },
               size: { value: 2 },
-              move: { enable: true, speed: 0.6 },
-              links: { enable: true, color: "#fff", opacity: 0.1 },
+              move: { 
+                enable: true, 
+                speed: 0.8,
+                direction: "none",
+                random: true,
+                straight: false,
+                outModes: { default: "out" }
+              },
+              links: { 
+                enable: true, 
+                color: "#00C9A7", 
+                opacity: 0.15,
+                distance: 150
+              },
             },
             interactivity: {
-              events: { onHover: { enable: true, mode: "repulse" } },
-              modes: { repulse: { distance: 80 } },
+              events: { 
+                onHover: { enable: true, mode: "repulse" },
+                onClick: { enable: true, mode: "push" }
+              },
+              modes: { 
+                repulse: { distance: 100 },
+                push: { quantity: 4 }
+              },
             },
           }}
         />
       </div>
-      {/* Glass Morphism Overlay */}
+
+      {/* Hero Content */}
       <motion.div
-        className="relative z-20 glass soft-light p-10 rounded-3xl flex flex-col items-center gap-6 shadow-2xl max-w-xl w-full mt-20"
-        initial={{ opacity: 0, y: 40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
+        className="hero-card relative z-20 glass soft-light p-12 rounded-3xl flex flex-col items-center gap-8 shadow-2xl max-w-2xl w-full mt-20 backdrop-blur-xl"
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 1.2, ease: "power3.out" }}
       >
-        <h1 className="text-4xl md:text-5xl font-extrabold text-center">
-          Manoj Kumar
-        </h1>
-        <h2 className="text-xl md:text-2xl font-semibold text-primary text-center">
-          Freelance Data Engineer
-        </h2>
-        <p className="text-center text-lg opacity-80 max-w-md">
-          Building advanced data pipelines, analytics, and AI solutions for modern businesses.
-        </p>
-        <motion.a
-          href="#contact"
-          className="mt-4 px-8 py-3 rounded-full bg-primary text-white font-bold shadow-lg hover:bg-accent transition animated"
-          whileHover={{ scale: 1.08 }}
-        >
-          Let&apos;s Connect
-        </motion.a>
+        <div ref={titleRef} className="text-center">
+          <h1 className="text-5xl md:text-7xl font-extrabold bg-gradient-to-r from-primary via-white to-accent bg-clip-text text-transparent">
+            <AnimatedText text="Manoj Kumar" delay={1} />
+          </h1>
+        </div>
+
+        <div ref={subtitleRef} className="text-center">
+          <h2 className="text-2xl md:text-3xl font-semibold text-primary">
+            <AnimatedText text="Freelance Data Engineer" delay={1.5} typewriter />
+          </h2>
+        </div>
+
+        <div ref={descriptionRef} className="text-center">
+          <p className="text-lg md:text-xl opacity-90 max-w-lg leading-relaxed">
+            Building advanced data pipelines, analytics, and AI solutions for modern businesses with cutting-edge technology.
+          </p>
+        </div>
+
+        <div ref={buttonRef}>
+          <MagneticButton 
+            className="mt-6 px-10 py-4 rounded-full bg-gradient-to-r from-primary to-accent text-white font-bold shadow-2xl hover:shadow-primary/25 transition-all duration-300 text-lg relative overflow-hidden group"
+            strength={0.4}
+          >
+            <span className="relative z-10">Let's Connect</span>
+            <div className="absolute inset-0 bg-gradient-to-r from-accent to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          </MagneticButton>
+        </div>
+      </motion.div>
+
+      {/* Scroll indicator */}
+      <motion.div
+        className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20"
+        animate={{ y: [0, 10, 0] }}
+        transition={{ duration: 2, repeat: Infinity }}
+      >
+        <div className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center">
+          <div className="w-1 h-3 bg-white/60 rounded-full mt-2 animate-pulse" />
+        </div>
       </motion.div>
     </section>
   );
-} 
+}
