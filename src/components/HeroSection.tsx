@@ -1,7 +1,6 @@
 "use client";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Sphere, MeshDistortMaterial, Float } from "@react-three/drei";
-import Particles from "react-tsparticles";
 import { motion } from "framer-motion";
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
@@ -18,7 +17,9 @@ function AnimatedSphere() {
     <Float speed={2} rotationIntensity={1} floatIntensity={2}>
       <Sphere args={[1, 64, 64]} scale={1.2}>
         <MeshDistortMaterial
-          color="#00C9A7"
+          color="#FFD700"
+          emissive="#FF69B4"
+          emissiveIntensity={0.25}
           attach="material"
           distort={0.4}
           speed={2}
@@ -114,47 +115,6 @@ export default function HeroSection() {
           <AnimatedSphere />
           <OrbitControls enableZoom={false} enablePan={false} autoRotate autoRotateSpeed={1.5} />
         </Canvas>
-      </div>
-
-      {/* Interactive Particles */}
-      <div className="absolute inset-0 z-10 pointer-events-none">
-        <Particles
-          id="tsparticles-hero"
-          options={{
-            fullScreen: false,
-            background: { color: { value: "transparent" } },
-            particles: {
-              number: { value: 80 },
-              color: { value: "#fff" },
-              opacity: { value: 0.2 },
-              size: { value: 2 },
-              move: { 
-                enable: true, 
-                speed: 0.8,
-                direction: "none",
-                random: true,
-                straight: false,
-                outModes: { default: "out" }
-              },
-              links: { 
-                enable: true, 
-                color: "#00C9A7", 
-                opacity: 0.15,
-                distance: 150
-              },
-            },
-            interactivity: {
-              events: { 
-                onHover: { enable: true, mode: "repulse" },
-                onClick: { enable: true, mode: "push" }
-              },
-              modes: { 
-                repulse: { distance: 100 },
-                push: { quantity: 4 }
-              },
-            },
-          }}
-        />
       </div>
 
       {/* Hero Content */}
