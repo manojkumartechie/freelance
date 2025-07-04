@@ -1,6 +1,6 @@
 "use client";
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls, Float } from "@react-three/drei";
+import { OrbitControls, Float, Sphere, Box, Cylinder } from "@react-three/drei";
 import { motion } from "framer-motion";
 import { useEffect, useRef, useContext } from "react";
 import { gsap } from "gsap";
@@ -9,75 +9,161 @@ import AnimatedText from "./AnimatedText";
 import MagneticButton from "./MagneticButton";
 import { Object3DContext } from "@/app/Object3DContext";
 import BlowText from "./BlowText";
-import { Shape } from "three";
+import * as THREE from "three";
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-function AnimatedDatabase() {
-  return (
-    <Float speed={2} rotationIntensity={1} floatIntensity={2}>
-      {/* Bottom Cylinder */}
-      <mesh position={[0, -0.35, 0]} castShadow receiveShadow>
-        <cylinderGeometry args={[1.1, 1.1, 0.5, 64]} />
-        <meshStandardMaterial
-          color="#B0C4DE"
-          metalness={0.8}
-          roughness={0.25}
-          emissive="#A9A9A9"
-          emissiveIntensity={0.15}
-        />
-      </mesh>
-      {/* Top Cylinder */}
-      <mesh position={[0, 0.35, 0]} castShadow receiveShadow>
-        <cylinderGeometry args={[1, 1, 0.5, 64]} />
-        <meshStandardMaterial
-          color="#E0E7EF"
-          metalness={0.9}
-          roughness={0.18}
-          emissive="#B0C4DE"
-          emissiveIntensity={0.12}
-        />
-      </mesh>
-    </Float>
-  );
-}
+function AnimatedRobot() {
+  const robotRef = useRef<THREE.Group>(null);
+  
+  useEffect(() => {
+    if (robotRef.current) {
+      // Gentle floating animation
+      gsap.to(robotRef.current.rotation, {
+        y: Math.PI * 2,
+        duration: 20,
+        repeat: -1,
+        ease: "none"
+      });
+      
+      gsap.to(robotRef.current.position, {
+        y: 0.3,
+        duration: 2,
+        yoyo: true,
+        repeat: -1,
+        ease: "power1.inOut"
+      });
+    }
+  }, []);
 
-function AnimatedStar() {
-  // Five-pointed star geometry
-  // We'll use a custom shape for the star
   return (
-    <Float speed={2} rotationIntensity={1.5} floatIntensity={2.5}>
-      <mesh castShadow receiveShadow rotation={[Math.PI / 2, 0, 0]}>
-        <extrudeGeometry args={[
-          (() => {
-            const shape = new Shape();
-            const outerRadius = 1.1;
-            const innerRadius = 0.45;
-            const spikes = 5;
-            let rot = Math.PI / 2 * 3;
-            let step = Math.PI / spikes;
-            shape.moveTo(0, -outerRadius);
-            for (let i = 0; i < spikes; i++) {
-              shape.lineTo(Math.cos(rot) * outerRadius, Math.sin(rot) * outerRadius);
-              rot += step;
-              shape.lineTo(Math.cos(rot) * innerRadius, Math.sin(rot) * innerRadius);
-              rot += step;
-            }
-            shape.lineTo(0, -outerRadius);
-            return shape;
-          })(),
-          { depth: 0.4, bevelEnabled: true, bevelThickness: 0.1, bevelSize: 0.1, bevelSegments: 2 }
-        ]} />
-        <meshStandardMaterial
-          color="#FFD700"
-          metalness={1}
-          roughness={0.15}
-          emissive="#FFF700"
-          emissiveIntensity={0.25}
-        />
-      </mesh>
+    <Float speed={1.5} rotationIntensity={0.5} floatIntensity={1}>
+      <group ref={robotRef}>
+        {/* Robot Head */}
+        <Box position={[0, 1.2, 0]} args={[0.8, 0.8, 0.8]} castShadow receiveShadow>
+          <meshStandardMaterial
+            color="#E8E8E8"
+            metalness={0.7}
+            roughness={0.3}
+            emissive="#B0C4DE"
+            emissiveIntensity={0.1}
+          />
+        </Box>
+        
+        {/* Robot Eyes */}
+        <Sphere position={[-0.2, 1.3, 0.4]} args={[0.1]} castShadow>
+          <meshStandardMaterial
+            color="#00C9A7"
+            emissive="#00C9A7"
+            emissiveIntensity={0.8}
+          />
+        </Sphere>
+        <Sphere position={[0.2, 1.3, 0.4]} args={[0.1]} castShadow>
+          <meshStandardMaterial
+            color="#00C9A7"
+            emissive="#00C9A7"
+            emissiveIntensity={0.8}
+          />
+        </Sphere>
+        
+        {/* Robot Antenna */}
+        <Cylinder position={[0, 1.8, 0]} args={[0.02, 0.02, 0.4]} castShadow>
+          <meshStandardMaterial color="#FF6B81" />
+        </Cylinder>
+        <Sphere position={[0, 2.1, 0]} args={[0.08]} castShadow>
+          <meshStandardMaterial
+            color="#FF6B81"
+            emissive="#FF6B81"
+            emissiveIntensity={0.6}
+          />
+        </Sphere>
+        
+        {/* Robot Body */}
+        <Box position={[0, 0.2, 0]} args={[1.2, 1.4, 0.8]} castShadow receiveShadow>
+          <meshStandardMaterial
+            color="#D3D3D3"
+            metalness={0.8}
+            roughness={0.2}
+            emissive="#A9A9A9"
+            emissiveIntensity={0.05}
+          />
+        </Box>
+        
+        {/* Robot Chest Panel */}
+        <Box position={[0, 0.3, 0.41]} args={[0.6, 0.8, 0.05]} castShadow>
+          <meshStandardMaterial
+            color="#1E1E1E"
+            metalness={0.9}
+            roughness={0.1}
+          />
+        </Box>
+        
+        {/* Robot Arms */}
+        <Cylinder position={[-0.8, 0.2, 0]} args={[0.15, 0.15, 1]} rotation={[0, 0, Math.PI / 2]} castShadow>
+          <meshStandardMaterial
+            color="#C0C0C0"
+            metalness={0.7}
+            roughness={0.3}
+          />
+        </Cylinder>
+        <Cylinder position={[0.8, 0.2, 0]} args={[0.15, 0.15, 1]} rotation={[0, 0, Math.PI / 2]} castShadow>
+          <meshStandardMaterial
+            color="#C0C0C0"
+            metalness={0.7}
+            roughness={0.3}
+          />
+        </Cylinder>
+        
+        {/* Robot Hands */}
+        <Sphere position={[-1.4, 0.2, 0]} args={[0.2]} castShadow>
+          <meshStandardMaterial
+            color="#808080"
+            metalness={0.8}
+            roughness={0.2}
+          />
+        </Sphere>
+        <Sphere position={[1.4, 0.2, 0]} args={[0.2]} castShadow>
+          <meshStandardMaterial
+            color="#808080"
+            metalness={0.8}
+            roughness={0.2}
+          />
+        </Sphere>
+        
+        {/* Robot Legs */}
+        <Cylinder position={[-0.3, -0.8, 0]} args={[0.18, 0.18, 1.2]} castShadow>
+          <meshStandardMaterial
+            color="#B8B8B8"
+            metalness={0.7}
+            roughness={0.3}
+          />
+        </Cylinder>
+        <Cylinder position={[0.3, -0.8, 0]} args={[0.18, 0.18, 1.2]} castShadow>
+          <meshStandardMaterial
+            color="#B8B8B8"
+            metalness={0.7}
+            roughness={0.3}
+          />
+        </Cylinder>
+        
+        {/* Robot Feet */}
+        <Box position={[-0.3, -1.6, 0.2]} args={[0.4, 0.2, 0.6]} castShadow>
+          <meshStandardMaterial
+            color="#696969"
+            metalness={0.8}
+            roughness={0.2}
+          />
+        </Box>
+        <Box position={[0.3, -1.6, 0.2]} args={[0.4, 0.2, 0.6]} castShadow>
+          <meshStandardMaterial
+            color="#696969"
+            metalness={0.8}
+            roughness={0.2}
+          />
+        </Box>
+      </group>
     </Float>
   );
 }
@@ -88,7 +174,6 @@ export default function HeroSection() {
   const subtitleRef = useRef<HTMLDivElement>(null);
   const descriptionRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLDivElement>(null);
-  const { objectType } = useContext(Object3DContext);
 
   useEffect(() => {
     if (!heroRef.current) return;
@@ -159,13 +244,22 @@ export default function HeroSection() {
       ref={heroRef}
       className="relative flex flex-col items-center justify-center min-h-screen w-full overflow-hidden"
     >
-      {/* 3D Animated Background */}
+      {/* 3D Animated Robot Background */}
       <div className="absolute inset-0 z-0">
-        <Canvas camera={{ position: [0, 0, 2.5] }}>
-          <ambientLight intensity={0.7} />
-          <directionalLight position={[2, 2, 2]} intensity={1.2} />
-          <AnimatedStar />
-          <OrbitControls enableZoom={false} enablePan={false} autoRotate autoRotateSpeed={1.5} />
+        <Canvas camera={{ position: [0, 0, 5] }}>
+          <ambientLight intensity={0.6} />
+          <directionalLight position={[5, 5, 5]} intensity={1} castShadow />
+          <pointLight position={[-5, 5, 5]} intensity={0.5} color="#00C9A7" />
+          <pointLight position={[5, -5, 5]} intensity={0.5} color="#FF6B81" />
+          <AnimatedRobot />
+          <OrbitControls 
+            enableZoom={false} 
+            enablePan={false} 
+            autoRotate 
+            autoRotateSpeed={0.5}
+            maxPolarAngle={Math.PI / 2}
+            minPolarAngle={Math.PI / 3}
+          />
         </Canvas>
       </div>
 
