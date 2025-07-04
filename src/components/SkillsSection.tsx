@@ -6,6 +6,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SiPython, SiAmazonwebservices, SiGooglecloud, SiApacheairflow, SiApachespark, SiDocker } from "react-icons/si";
 import { FaDatabase } from "react-icons/fa";
 import { MdOutlineDataObject } from "react-icons/md";
+import BlowText from "./BlowText";
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
@@ -129,7 +130,7 @@ export default function SkillsSection() {
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent" />
       
       <h2 ref={titleRef} className="text-4xl md:text-5xl font-bold mb-16 text-center bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-        Skills & Expertise
+        <BlowText text="Skills & Expertise" distance={70} rotation={60} glowColor="#3B82F6" />
       </h2>
       
       <div ref={skillsGridRef} className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-8 max-w-6xl w-full">

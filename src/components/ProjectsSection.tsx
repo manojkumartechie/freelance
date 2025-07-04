@@ -6,6 +6,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { FaExternalLinkAlt, FaCode, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { MdAutoAwesome } from "react-icons/md";
 import MagneticButton from "./MagneticButton";
+import BlowText from "./BlowText";
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
@@ -224,7 +225,7 @@ export default function ProjectsSection() {
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-accent/5 to-transparent" />
       
       <h2 ref={titleRef} className="text-4xl md:text-5xl font-bold mb-8 text-center bg-gradient-to-r from-accent to-primary bg-clip-text text-transparent">
-        Featured Projects
+        <BlowText text="Featured Projects" distance={70} rotation={60} glowColor="#FF6B81" />
       </h2>
 
       {/* View mode toggle */}

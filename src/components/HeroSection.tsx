@@ -1,32 +1,83 @@
 "use client";
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls, Sphere, MeshDistortMaterial, Float } from "@react-three/drei";
+import { OrbitControls, Float } from "@react-three/drei";
 import { motion } from "framer-motion";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useContext } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import AnimatedText from "./AnimatedText";
 import MagneticButton from "./MagneticButton";
+import { Object3DContext } from "@/app/Object3DContext";
+import BlowText from "./BlowText";
+import { Shape } from "three";
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-function AnimatedSphere() {
+function AnimatedDatabase() {
   return (
     <Float speed={2} rotationIntensity={1} floatIntensity={2}>
-      <Sphere args={[1, 64, 64]} scale={1.2}>
-        <MeshDistortMaterial
-          color="#FFD700"
-          emissive="#FF69B4"
-          emissiveIntensity={0.25}
-          attach="material"
-          distort={0.4}
-          speed={2}
-          roughness={0.2}
+      {/* Bottom Cylinder */}
+      <mesh position={[0, -0.35, 0]} castShadow receiveShadow>
+        <cylinderGeometry args={[1.1, 1.1, 0.5, 64]} />
+        <meshStandardMaterial
+          color="#B0C4DE"
           metalness={0.8}
+          roughness={0.25}
+          emissive="#A9A9A9"
+          emissiveIntensity={0.15}
         />
-      </Sphere>
+      </mesh>
+      {/* Top Cylinder */}
+      <mesh position={[0, 0.35, 0]} castShadow receiveShadow>
+        <cylinderGeometry args={[1, 1, 0.5, 64]} />
+        <meshStandardMaterial
+          color="#E0E7EF"
+          metalness={0.9}
+          roughness={0.18}
+          emissive="#B0C4DE"
+          emissiveIntensity={0.12}
+        />
+      </mesh>
+    </Float>
+  );
+}
+
+function AnimatedStar() {
+  // Five-pointed star geometry
+  // We'll use a custom shape for the star
+  return (
+    <Float speed={2} rotationIntensity={1.5} floatIntensity={2.5}>
+      <mesh castShadow receiveShadow rotation={[Math.PI / 2, 0, 0]}>
+        <extrudeGeometry args={[
+          (() => {
+            const shape = new Shape();
+            const outerRadius = 1.1;
+            const innerRadius = 0.45;
+            const spikes = 5;
+            let rot = Math.PI / 2 * 3;
+            let step = Math.PI / spikes;
+            shape.moveTo(0, -outerRadius);
+            for (let i = 0; i < spikes; i++) {
+              shape.lineTo(Math.cos(rot) * outerRadius, Math.sin(rot) * outerRadius);
+              rot += step;
+              shape.lineTo(Math.cos(rot) * innerRadius, Math.sin(rot) * innerRadius);
+              rot += step;
+            }
+            shape.lineTo(0, -outerRadius);
+            return shape;
+          })(),
+          { depth: 0.4, bevelEnabled: true, bevelThickness: 0.1, bevelSize: 0.1, bevelSegments: 2 }
+        ]} />
+        <meshStandardMaterial
+          color="#FFD700"
+          metalness={1}
+          roughness={0.15}
+          emissive="#FFF700"
+          emissiveIntensity={0.25}
+        />
+      </mesh>
     </Float>
   );
 }
@@ -37,6 +88,7 @@ export default function HeroSection() {
   const subtitleRef = useRef<HTMLDivElement>(null);
   const descriptionRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLDivElement>(null);
+  const { objectType } = useContext(Object3DContext);
 
   useEffect(() => {
     if (!heroRef.current) return;
@@ -112,7 +164,7 @@ export default function HeroSection() {
         <Canvas camera={{ position: [0, 0, 2.5] }}>
           <ambientLight intensity={0.7} />
           <directionalLight position={[2, 2, 2]} intensity={1.2} />
-          <AnimatedSphere />
+          <AnimatedStar />
           <OrbitControls enableZoom={false} enablePan={false} autoRotate autoRotateSpeed={1.5} />
         </Canvas>
       </div>
@@ -126,13 +178,13 @@ export default function HeroSection() {
       >
         <div ref={titleRef} className="text-center">
           <h1 className="text-5xl md:text-7xl font-extrabold bg-gradient-to-r from-primary via-white to-accent bg-clip-text text-transparent">
-            <AnimatedText text="Manoj Kumar" delay={1} />
+            <BlowText text="Manoj Kumar" distance={90} rotation={80} glowColor="#FFD700" />
           </h1>
         </div>
 
         <div ref={subtitleRef} className="text-center">
           <h2 className="text-2xl md:text-3xl font-semibold text-primary">
-            <AnimatedText text="Freelance Data Engineer" delay={1.5} typewriter />
+            <BlowText text="Freelance Data Engineer" distance={60} rotation={50} glowColor="#00C9A7" />
           </h2>
         </div>
 

@@ -1,6 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
 import { MdWorkOutline } from "react-icons/md";
+import BlowText from "./BlowText";
 
 // Placeholder case studies
 const caseStudies = [
@@ -26,7 +27,9 @@ const caseStudies = [
 export default function CaseStudiesSection() {
   return (
     <section className="w-full flex flex-col items-center">
-      <h2 className="text-3xl font-bold mb-8 text-center">Case Studies</h2>
+      <h2 className="text-3xl font-bold mb-8 text-center">
+        <BlowText text="Case Studies" distance={60} rotation={50} glowColor="#00C9A7" />
+      </h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl w-full">
         {caseStudies.map((cs, idx) => (
           <motion.div

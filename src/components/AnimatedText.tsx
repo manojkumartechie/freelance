@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { TextPlugin } from 'gsap/TextPlugin';
 
@@ -23,6 +23,7 @@ export default function AnimatedText({
   typewriter = false 
 }: AnimatedTextProps) {
   const textRef = useRef<HTMLSpanElement>(null);
+  const [blow, setBlow] = useState(false);
 
   useEffect(() => {
     if (!textRef.current) return;
@@ -60,5 +61,18 @@ export default function AnimatedText({
     }
   }, [text, delay, duration, typewriter]);
 
-  return <span ref={textRef} className={className}></span>;
+  // Handler for blow effect
+  const triggerBlow = () => {
+    setBlow(true);
+    setTimeout(() => setBlow(false), 1100);
+  };
+
+  return <span
+    ref={textRef}
+    className={className + (blow ? ' animate-blow' : '')}
+    onMouseDown={triggerBlow}
+    onTouchStart={triggerBlow}
+    onMouseEnter={triggerBlow}
+    style={{ cursor: 'pointer', display: 'inline-block' }}
+  ></span>;
 }

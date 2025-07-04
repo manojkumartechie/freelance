@@ -7,6 +7,7 @@ import { FaLinkedin, FaInstagram, FaGithub, FaYoutube, FaTwitter, FaPaperPlane }
 import { SiLeetcode, SiKaggle } from "react-icons/si";
 import MagneticButton from "./MagneticButton";
 import AnimatedText from "./AnimatedText";
+import BlowText from "./BlowText";
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
@@ -151,8 +152,8 @@ export default function ContactSection() {
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent" />
       
-      <h2 ref={titleRef} className="text-4xl md:text-5xl font-bold mb-12 text-center">
-        <AnimatedText text="Let's Connect" />
+      <h2 ref={titleRef} className="text-3xl font-bold mb-8 text-center">
+        <BlowText text="Contact" distance={60} rotation={50} glowColor="#FF6B81" />
       </h2>
 
       {/* Social Links */}

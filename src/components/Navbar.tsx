@@ -1,11 +1,13 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import MagneticButton from "./MagneticButton";
+import { Object3DContext } from "@/app/Object3DContext";
+import BlowText from "./BlowText";
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
@@ -19,10 +21,21 @@ const navLinks = [
   { name: "Contact", href: "#contact" },
 ];
 
+const navGlowColors = [
+  "#FFD700", // Home - gold
+  "#00C9A7", // About - teal
+  "#3B82F6", // Skills - blue
+  "#FF6B81", // Projects - pink
+  "#FF6B81"  // Contact - accent pink
+];
+
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const navRef = useRef<HTMLElement>(null);
+  const { setObjectType } = useContext(Object3DContext);
+  const [blowIndex, setBlowIndex] = useState<number | null>(null);
+  const [navBlow, setNavBlow] = useState<{ [k: number]: boolean }>({});
 
   useEffect(() => {
     if (!navRef.current) return;
@@ -48,9 +61,21 @@ export default function Navbar() {
     return () => ctx.revert();
   }, []);
 
-  const handleLinkClick = (href: string) => {
+  const triggerNavBlow = (index: number) => {
+    setNavBlow((prev) => ({ ...prev, [index]: true }));
+    setTimeout(() => setNavBlow((prev) => ({ ...prev, [index]: false })), 700);
+  };
+
+  const handleLinkClick = (href: string, index?: number) => {
     setOpen(false);
-    
+    if (typeof index === 'number') {
+      setBlowIndex(index);
+      setObjectType('star');
+      setTimeout(() => {
+        setBlowIndex(null);
+        setObjectType('database');
+      }, 1200);
+    }
     // Smooth scroll with GSAP
     const target = document.querySelector(href);
     if (target) {
@@ -102,10 +127,13 @@ export default function Navbar() {
                 transition={{ delay: 0.7 + index * 0.1 }}
               >
                 <MagneticButton
-                  className="font-semibold text-white/90 hover:text-primary transition-colors px-4 py-2 rounded-lg relative group"
-                  onClick={() => handleLinkClick(link.href)}
+                  className={`font-semibold text-white/90 hover:text-primary transition-colors px-4 py-2 rounded-lg relative group ${blowIndex === index ? 'animate-blow' : ''} ${navBlow[index] ? 'animate-blow' : ''}`}
+                  onClick={() => { handleLinkClick(link.href, index); triggerNavBlow(index); }}
+                  onMouseDown={() => triggerNavBlow(index)}
+                  onTouchStart={() => triggerNavBlow(index)}
+                  onMouseEnter={() => triggerNavBlow(index)}
                 >
-                  {link.name}
+                  <BlowText text={link.name} glowColor={navGlowColors[index]} />
                   <motion.div
                     className="absolute bottom-0 left-0 w-full h-0.5 bg-primary origin-left"
                     initial={{ scaleX: 0 }}
@@ -166,10 +194,13 @@ export default function Navbar() {
                   transition={{ delay: index * 0.1 }}
                 >
                   <MagneticButton
-                    className="text-3xl font-bold text-white hover:text-primary transition-colors px-6 py-3"
-                    onClick={() => handleLinkClick(link.href)}
+                    className={`text-3xl font-bold text-white hover:text-primary transition-colors px-6 py-3 ${blowIndex === index ? 'animate-blow' : ''} ${navBlow[index] ? 'animate-blow' : ''}`}
+                    onClick={() => { handleLinkClick(link.href, index); triggerNavBlow(index); }}
+                    onMouseDown={() => triggerNavBlow(index)}
+                    onTouchStart={() => triggerNavBlow(index)}
+                    onMouseEnter={() => triggerNavBlow(index)}
                   >
-                    {link.name}
+                    <BlowText text={link.name} glowColor={navGlowColors[index]} />
                   </MagneticButton>
                 </motion.li>
               ))}

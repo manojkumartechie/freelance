@@ -1,5 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
+import BlowText from "./BlowText";
 
 // Special Offer section with glass morphism and animated CTA
 export default function SpecialOfferSection() {
@@ -12,7 +13,9 @@ export default function SpecialOfferSection() {
         transition={{ duration: 0.7 }}
         viewport={{ once: true }}
       >
-        <h2 className="text-2xl font-bold text-center mb-2 text-primary">Special Offer</h2>
+        <h2 className="text-2xl font-bold text-center mb-2 text-primary">
+          <BlowText text="Special Offer" distance={60} rotation={50} glowColor="#FFD700" />
+        </h2>
         <p className="text-lg text-center opacity-90 mb-4">
           First 10 projects for new clients at just <span className="font-bold text-accent">₹10,000</span> each!
         </p>

@@ -1,6 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
 import { FaQuoteLeft } from "react-icons/fa";
+import BlowText from "./BlowText";
 
 // Placeholder testimonials
 const testimonials = [
@@ -25,7 +26,9 @@ const testimonials = [
 export default function TestimonialsSection() {
   return (
     <section className="w-full flex flex-col items-center">
-      <h2 className="text-3xl font-bold mb-8 text-center">Testimonials</h2>
+      <h2 className="text-3xl font-bold mb-8 text-center">
+        <BlowText text="Testimonials" distance={60} rotation={50} glowColor="#3B82F6" />
+      </h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl w-full">
         {testimonials.map((t, idx) => (
           <motion.div

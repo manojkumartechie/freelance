@@ -1,6 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
 import { MdOutlineArrowForward } from "react-icons/md";
+import BlowText from "./BlowText";
 
 // Placeholder workflow steps
 const steps = [
@@ -16,7 +17,9 @@ const steps = [
 export default function ProcessSection() {
   return (
     <section className="w-full flex flex-col items-center">
-      <h2 className="text-3xl font-bold mb-8 text-center">My Process</h2>
+      <h2 className="text-3xl font-bold mb-8 text-center">
+        <BlowText text="My Process" distance={60} rotation={50} glowColor="#00C9A7" />
+      </h2>
       <div className="flex flex-col md:flex-row items-center justify-center gap-0 max-w-5xl w-full overflow-x-auto md:overflow-x-visible whitespace-nowrap md:whitespace-normal py-4 px-4 md:px-0 scroll-snap-x scroll-smooth">
         {steps.map((step, idx) => (
           <div key={step} className="flex flex-col md:flex-row items-center min-w-[220px] scroll-snap-align-start">

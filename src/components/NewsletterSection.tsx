@@ -1,6 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
 import { useState } from "react";
+import BlowText from "./BlowText";
 
 // Newsletter Signup section
 export default function NewsletterSection() {
@@ -24,7 +25,9 @@ export default function NewsletterSection() {
 
   return (
     <section className="w-full flex flex-col items-center">
-      <h2 className="text-3xl font-bold mb-8 text-center">Newsletter Signup</h2>
+      <h2 className="text-3xl font-bold mb-8 text-center">
+        <BlowText text="Newsletter" distance={60} rotation={50} glowColor="#FFD700" />
+      </h2>
       <motion.form
         className="glass soft-light rounded-2xl p-8 max-w-lg w-full flex flex-col gap-4 shadow-2xl"
         onSubmit={handleSubmit}
