@@ -1,3 +1,4 @@
+import dynamic from "next/dynamic";
 import EnhancedHeroSection from "@/components/EnhancedHeroSection";
 import AboutSection from "@/components/AboutSection";
 import EnhancedSkillsSection from "@/components/EnhancedSkillsSection";
@@ -13,11 +14,17 @@ import AchievementsTimelineSection from "@/components/AchievementsTimelineSectio
 import VideoIntroSection from "@/components/VideoIntroSection";
 import NewsletterSection from "@/components/NewsletterSection";
 
+// Dynamically import EnhancedHeroSection to avoid hydration mismatch
+const DynamicEnhancedHeroSection = dynamic(
+  () => import("@/components/EnhancedHeroSection"),
+  { ssr: false }
+);
+
 export default function Home() {
   return (
     <main className="flex flex-col gap-20 items-center w-full relative overflow-hidden">
       {/* Hero Section with enhanced 3D background and particles */}
-      <section id="home"><EnhancedHeroSection /></section>
+      <section id="home"><DynamicEnhancedHeroSection /></section>
       
       {/* About Section with animated timeline */}
       <section id="about"><AboutSection /></section>

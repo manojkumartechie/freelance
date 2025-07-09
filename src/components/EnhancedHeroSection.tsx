@@ -1,5 +1,5 @@
 "use client";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -17,7 +17,6 @@ export default function EnhancedHeroSection() {
   const subtitleRef = useRef<HTMLDivElement>(null);
   const descriptionRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLDivElement>(null);
-  const [titleVisible, setTitleVisible] = useState(false);
   const [animationComplete, setAnimationComplete] = useState(false);
 
   useEffect(() => {
@@ -46,7 +45,6 @@ export default function EnhancedHeroSection() {
         scale: 1,
         duration: 1.5,
         ease: "back.out(2)",
-        onStart: () => setTitleVisible(true),
         onComplete: () => {
           // Title reappears after initial animation
           setTimeout(() => {
@@ -187,35 +185,28 @@ export default function EnhancedHeroSection() {
           ))}
         </div>
 
-        <AnimatePresence>
-          {titleVisible && (
-            <motion.div 
-              ref={titleRef} 
-              className="text-center relative z-10"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-            >
-              <h1 className="text-6xl md:text-8xl font-extrabold bg-gradient-to-r from-primary via-white to-accent bg-clip-text text-transparent leading-tight">
-                <BlowText 
-                  text="Manoj Kumar" 
-                  distance={120} 
-                  rotation={100} 
-                  glowColor="#FFD700"
-                  className="inline-block"
-                />
-              </h1>
-              
-              {/* Animated underline */}
-              <motion.div
-                className="h-1 bg-gradient-to-r from-primary to-accent rounded-full mt-4"
-                initial={{ width: 0 }}
-                animate={{ width: "100%" }}
-                transition={{ duration: 1, delay: 1.5 }}
-              />
-            </motion.div>
-          )}
-        </AnimatePresence>
+        <div 
+          ref={titleRef} 
+          className="text-center relative z-10"
+        >
+          <h1 className="text-6xl md:text-8xl font-extrabold bg-gradient-to-r from-primary via-white to-accent bg-clip-text text-transparent leading-tight">
+            <BlowText 
+              text="Manoj Kumar" 
+              distance={120} 
+              rotation={100} 
+              glowColor="#FFD700"
+              className="inline-block"
+            />
+          </h1>
+          
+          {/* Animated underline */}
+          <motion.div
+            className="h-1 bg-gradient-to-r from-primary to-accent rounded-full mt-4"
+            initial={{ width: 0 }}
+            animate={{ width: "100%" }}
+            transition={{ duration: 1, delay: 1.5 }}
+          />
+        </div>
 
         <div ref={subtitleRef} className="text-center relative z-10">
           <h2 className="text-3xl md:text-4xl font-semibold text-primary mb-2">
