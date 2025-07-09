@@ -2,9 +2,14 @@
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
-import RealisticRobot from "./RealisticRobot";
 import MagneticButton from "./MagneticButton";
 import BlowText from "./BlowText";
+import dynamic from "next/dynamic";
+
+const RealisticRobot = dynamic(() => import("./RealisticRobot"), {
+  ssr: false,
+  loading: () => <div className="absolute inset-0 z-10" />
+});
 
 
 export default function EnhancedHeroSection() {
