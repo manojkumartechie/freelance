@@ -8,6 +8,7 @@ interface BlowTextProps {
   rotation?: number; // max deg letters spin
   duration?: number; // animation duration (s)
   restoreDelay?: number; // ms before restore
+  glowColor?: string;
   className?: string;
 }
 
@@ -17,6 +18,7 @@ export default function BlowText({
   rotation = 60,
   duration = 0.7,
   restoreDelay = 800,
+  glowColor,
   className = ""
 }: BlowTextProps) {
   const ref = useRef<HTMLSpanElement>(null);
