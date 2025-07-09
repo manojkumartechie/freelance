@@ -1,5 +1,4 @@
 import dynamic from "next/dynamic";
-import EnhancedHeroSection from "@/components/EnhancedHeroSection";
 import AboutSection from "@/components/AboutSection";
 import EnhancedSkillsSection from "@/components/EnhancedSkillsSection";
 import EnhancedProjectsSection from "@/components/EnhancedProjectsSection";
