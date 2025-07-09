@@ -2,16 +2,12 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { FaExternalLinkAlt, FaCode, FaChevronLeft, FaChevronRight, FaFilter, FaGithub, FaPlay } from "react-icons/fa";
 import { MdAutoAwesome, MdDataObject, MdCloud, MdAnalytics } from "react-icons/md";
 import { SiPython, SiAmazonwebservices, SiDocker, SiKubernetes } from "react-icons/si";
 import MagneticButton from "./MagneticButton";
 import BlowText from "./BlowText";
 
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger);
-}
 
 const projectCategories = ["All", "Data Pipeline", "Analytics", "Cloud", "Machine Learning"];
 

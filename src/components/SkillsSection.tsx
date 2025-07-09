@@ -2,15 +2,11 @@
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SiPython, SiAmazonwebservices, SiGooglecloud, SiApacheairflow, SiApachespark, SiDocker } from "react-icons/si";
 import { FaDatabase } from "react-icons/fa";
 import { MdOutlineDataObject } from "react-icons/md";
 import BlowText from "./BlowText";
 
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger);
-}
 
 const skills = [
   { name: "Python", icon: <SiPython className="text-yellow-300" />, level: 95 },

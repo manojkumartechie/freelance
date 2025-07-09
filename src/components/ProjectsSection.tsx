@@ -2,15 +2,11 @@
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { FaExternalLinkAlt, FaCode, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { MdAutoAwesome } from "react-icons/md";
 import MagneticButton from "./MagneticButton";
 import BlowText from "./BlowText";
 
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger);
-}
 
 const projects = Array.from({ length: 20 }).map((_, i) => ({
   id: i + 1,

@@ -4,16 +4,12 @@ import { OrbitControls, Float, Sphere, Box, Cylinder, RoundedBox } from "@react-
 import { motion } from "framer-motion";
 import { useEffect, useRef, useContext } from "react";
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import AnimatedText from "./AnimatedText";
 import MagneticButton from "./MagneticButton";
 import { Object3DContext } from "@/app/Object3DContext";
 import BlowText from "./BlowText";
 import * as THREE from "three";
 
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger);
-}
 
 function HumanizedRobot() {
   const robotRef = useRef<THREE.Group>(null);

@@ -2,14 +2,10 @@
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import RealisticRobot from "./RealisticRobot";
 import MagneticButton from "./MagneticButton";
 import BlowText from "./BlowText";
 
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger);
-}
 
 export default function EnhancedHeroSection() {
   const heroRef = useRef<HTMLElement>(null);

@@ -1,12 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { TextPlugin } from 'gsap/TextPlugin';
 
-// Register GSAP plugins
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger, TextPlugin);
-}
 
 export const useGSAP = () => {
   const ref = useRef<HTMLElement>(null);
@@ -16,13 +10,13 @@ export const useGSAP = () => {
     return () => ctx.revert();
   }, []);
 
-  return { ref, gsap, ScrollTrigger };
+  return { ref, gsap };
 };
 
 export const useScrollAnimation = (
   trigger: string,
   animation: gsap.TweenVars,
-  options?: ScrollTrigger.Vars
+  options?: any
 ) => {
   useEffect(() => {
     const tl = gsap.timeline({

@@ -2,16 +2,12 @@
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { FaLinkedin, FaInstagram, FaGithub, FaYoutube, FaTwitter, FaPaperPlane } from "react-icons/fa";
 import { SiLeetcode, SiKaggle } from "react-icons/si";
 import MagneticButton from "./MagneticButton";
 import AnimatedText from "./AnimatedText";
 import BlowText from "./BlowText";
 
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger);
-}
 
 const socials = [
   { name: "LinkedIn", icon: <FaLinkedin />, url: "#", color: "#0077B5" },
