@@ -3,6 +3,7 @@ import { useState, useEffect, useRef, useContext } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import MagneticButton from "./MagneticButton";
 import { Object3DContext } from "@/app/Object3DContext";
 import BlowText from "./BlowText";
@@ -33,6 +34,7 @@ export default function Navbar() {
   const [navBlow, setNavBlow] = useState<{ [k: number]: boolean }>({});
 
   useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
     if (!navRef.current) return;
 
     const ctx = gsap.context(() => {
@@ -90,13 +92,11 @@ export default function Navbar() {
           scrolled ? 'py-2' : 'py-4'
         }`}
       >
-        <div className={`glass soft-light mx-4 px-8 py-4 rounded-full shadow-xl flex items-center justify-between w-full max-w-6xl transition-all duration-500 ${
-          scrolled ? 'backdrop-blur-xl bg-black/20' : 'backdrop-blur-lg bg-white/10'
-        }`}>
+        <div className={`mx-4 px-8 py-4 rounded-full flex items-center justify-between w-full max-w-6xl transition-all duration-500`}>
           {/* Logo/Brand */}
           <motion.a 
             href="#home" 
-            className="font-extrabold text-2xl text-primary tracking-tight relative"
+            className="font-extrabold text-2xl tracking-tight relative"
             whileHover={{ scale: 1.05 }}
             onClick={(e) => {
               e.preventDefault();
@@ -104,12 +104,6 @@ export default function Navbar() {
             }}
           >
             Manoj
-            <motion.div
-              className="absolute -inset-2 bg-primary/20 rounded-lg -z-10"
-              initial={{ scale: 0, opacity: 0 }}
-              whileHover={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.2 }}
-            />
           </motion.a>
 
           {/* Desktop Nav */}
@@ -122,19 +116,13 @@ export default function Navbar() {
                 transition={{ delay: 0.7 + index * 0.1 }}
               >
                 <MagneticButton
-                  className={`font-semibold text-white/90 hover:text-primary transition-colors px-4 py-2 rounded-lg relative group ${blowIndex === index ? 'animate-blow' : ''} ${navBlow[index] ? 'animate-blow' : ''}`}
+                  className={`font-semibold transition-colors px-4 py-2 rounded-lg relative group ${blowIndex === index ? 'animate-blow' : ''} ${navBlow[index] ? 'animate-blow' : ''}`}
                   onClick={() => { handleLinkClick(link.href, index); triggerNavBlow(index); }}
                   onMouseDown={() => triggerNavBlow(index)}
                   onTouchStart={() => triggerNavBlow(index)}
                   onMouseEnter={() => triggerNavBlow(index)}
                 >
-                  <BlowText text={link.name} glowColor={navGlowColors[index]} />
-                  <motion.div
-                    className="absolute bottom-0 left-0 w-full h-0.5 bg-primary origin-left"
-                    initial={{ scaleX: 0 }}
-                    whileHover={{ scaleX: 1 }}
-                    transition={{ duration: 0.3 }}
-                  />
+                  <BlowText text={link.name} />
                 </MagneticButton>
               </motion.li>
             ))}
@@ -142,7 +130,7 @@ export default function Navbar() {
 
           {/* Mobile Menu Button */}
           <MagneticButton
-            className="md:hidden text-2xl text-primary focus:outline-none p-2"
+            className="md:hidden text-2xl focus:outline-none p-2"
             onClick={() => setOpen(!open)}
           >
             <motion.div
@@ -166,7 +154,7 @@ export default function Navbar() {
           >
             {/* Backdrop */}
             <motion.div
-              className="absolute inset-0 bg-black/80 backdrop-blur-xl"
+              className="absolute inset-0"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -189,13 +177,13 @@ export default function Navbar() {
                   transition={{ delay: index * 0.1 }}
                 >
                   <MagneticButton
-                    className={`text-3xl font-bold text-white hover:text-primary transition-colors px-6 py-3 ${blowIndex === index ? 'animate-blow' : ''} ${navBlow[index] ? 'animate-blow' : ''}`}
+                    className={`text-3xl font-bold transition-colors px-6 py-3 ${blowIndex === index ? 'animate-blow' : ''} ${navBlow[index] ? 'animate-blow' : ''}`}
                     onClick={() => { handleLinkClick(link.href, index); triggerNavBlow(index); }}
                     onMouseDown={() => triggerNavBlow(index)}
                     onTouchStart={() => triggerNavBlow(index)}
                     onMouseEnter={() => triggerNavBlow(index)}
                   >
-                    <BlowText text={link.name} glowColor={navGlowColors[index]} />
+                    <BlowText text={link.name} />
                   </MagneticButton>
                 </motion.li>
               ))}
