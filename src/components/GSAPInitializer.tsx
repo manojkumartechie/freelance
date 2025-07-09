@@ -1,14 +1,25 @@
 "use client";
 import { useEffect } from 'react';
 import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { TextPlugin } from 'gsap/TextPlugin';
-import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
 
 export default function GSAPInitializer() {
   useEffect(() => {
-    // Register all GSAP plugins on the client side only
-    gsap.registerPlugin(ScrollTrigger, TextPlugin, ScrollToPlugin);
+    // Dynamically import and register GSAP plugins on the client side only
+    const loadPlugins = async () => {
+      const [
+        { ScrollTrigger },
+        { TextPlugin },
+        { ScrollToPlugin }
+      ] = await Promise.all([
+        import('gsap/ScrollTrigger'),
+        import('gsap/TextPlugin'),
+        import('gsap/ScrollToPlugin')
+      ]);
+
+      gsap.registerPlugin(ScrollTrigger, TextPlugin, ScrollToPlugin);
+    };
+
+    loadPlugins();
   }, []);
 
   return null;
