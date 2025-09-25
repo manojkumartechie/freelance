@@ -34,7 +34,6 @@ export default function Navbar() {
   const [navBlow, setNavBlow] = useState<{ [k: number]: boolean }>({});
 
   useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
     if (!navRef.current) return;
 
     const ctx = gsap.context(() => {

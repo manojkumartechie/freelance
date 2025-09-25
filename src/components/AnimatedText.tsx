@@ -25,35 +25,39 @@ export default function AnimatedText({
 
     const element = textRef.current;
     
-    if (typewriter) {
-      gsap.set(element, { text: '' });
-      gsap.to(element, {
-        text: text,
-        duration: duration * 2,
-        delay,
-        ease: 'none',
-      });
-    } else {
-      // Split text into characters for stagger animation
-      const chars = text.split('').map(char => 
-        `<span class="inline-block">${char === ' ' ? '&nbsp;' : char}</span>`
-      ).join('');
-      
-      element.innerHTML = chars;
-      
-      gsap.fromTo(element.children, 
-        { opacity: 0, y: 20, rotationX: -90 },
-        { 
-          opacity: 1, 
-          y: 0, 
-          rotationX: 0,
-          duration: 0.8,
+    const ctx = gsap.context(() => {
+      if (typewriter) {
+        gsap.set(element, { text: '' });
+        gsap.to(element, {
+          text: text,
+          duration: duration * 2,
           delay,
-          stagger: 0.02,
-          ease: 'back.out(1.7)'
-        }
-      );
-    }
+          ease: 'none',
+        });
+      } else {
+        // Split text into characters for stagger animation
+        const chars = text.split('').map(char => 
+          `<span class="inline-block">${char === ' ' ? '&nbsp;' : char}</span>`
+        ).join('');
+        
+        element.innerHTML = chars;
+        
+        gsap.fromTo(element.children, 
+          { opacity: 0, y: 20, rotationX: -90 },
+          { 
+            opacity: 1, 
+            y: 0, 
+            rotationX: 0,
+            duration: 0.8,
+            delay,
+            stagger: 0.02,
+            ease: 'back.out(1.7)'
+          }
+        );
+      }
+    }, element);
+
+    return () => ctx.revert();
   }, [text, delay, duration, typewriter]);
 
   // Handler for blow effect
